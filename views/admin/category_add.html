@@ -1,0 +1,17 @@
+{% extends 'layout.html' %} {% block main %}
+<ol class="breadcrumb">
+    <li>
+        <a href="/admin">管理首页</a>
+    </li>
+    <li class="active">分类添加</li>
+</ol>
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">分类名称：</label>
+        <input type="text" class="form-control categoryName" id="exampleInputEmail1" placeholder="请输入分类名称">
+    </div>
+    <button type="submit" class="btn btn-primary fnAddCategory">确定</button>
+</form>
+{% endblock %} {% block script %}
+<script src="/public/js/admin/category_add.js"></script>
+{% endblock %}

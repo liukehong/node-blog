@@ -1,0 +1,33 @@
+{% extends 'layout.html' %} {% block main %}
+<ol class="breadcrumb">
+    <li>
+        <a href="/admin">管理首页</a>
+    </li>
+    <li class="active">内容编辑</li>
+</ol>
+<div>
+    <div class="form-group">
+        <label for="category">分类：</label>
+        <select name="category" id="category" class="form-control category">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="contentName">标题：</label>
+        <input name="contentName" class="form-control contentName" placeholder="请输入内容标题">
+    </div>
+    <div class="form-group">
+        <label for="description">简介：</label>
+        <textarea name="description" class="description form-control" id="description" rows="5" placeholder="请输入内容简介"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="content">内容：</label>
+        <textarea name="content" id="content" class="content form-control" placeholder="请输入内容" rows="7"></textarea>
+    </div>
+    <button class="btn btn-primary fnEditContent">确定</button>
+</div>
+{% endblock %} {% block script %}
+<script src="/public/js/admin/content_edit.js"></script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'layout.html' %} 
+{% block main %}
+<ol class="breadcrumb">
+    <!-- <li>
+        <a href="#">管理首页</a>
+    </li> -->
+    <li class="active">管理首页</li>
+</ol>
+<div class="jumbotron">
+    <h1>Hello,<span class="admin-user-name"></span></h1>
+    <p>
+        欢迎进入我的博客后台管理系统！
+    </p>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="/public/js/admin/index.js"></script>
+{% endblock %}

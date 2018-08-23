@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>lkh博客</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="/public/css/base.css">
+    <link rel="stylesheet" href="/public/css/home.css">
+    {% block style %}{% endblock %}
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="banner">
+        </div>
+        <div class="wrap-nav">
+            <div class="nav-item fl active">首页</div>
+            <div class="nav-item fl">Html</div>
+            <div class="nav-item fl">Css</div>
+            <div class="nav-item fl">Javascript</div>
+            <div class="nav-item fl">NodeJs</div>
+        </div>
+        <div class="box clear">
+            {% block content %}{% endblock %}
+            <!-- <div class="box-left fl">
+                <div class="aItem-wrap clear"></div>
+                <div class="page-wrap clear">
+                    <div class="fl preveBtn"><span style="padding-left: 15px;">上一页</span></div>
+                    <div class="fl pagesBox">1/2</div>
+                    <div class="fr nextBtn"><span style="padding-right: 15px;">下一页</span></div>
+                </div>
+                <div class="noDataBox">暂无数据</div>
+            </div> -->
+            <div class="box-right fl clear">
+                <div class="loginBox clear">
+                    <h3 class="title">登录</h3>
+                    <div class="title-line">
+                        <div></div>
+                    </div>
+                    <div class="fl form-item">
+                        <div class="form-item-name fl">用户名：</div>
+                        <div class="form-item-input fl">
+                            <input class="input enterName" type="text">
+                        </div>
+                    </div>
+                    <div class="fl form-item">
+                        <div class="form-item-name fl">密码：</div>
+                        <div class="form-item-input fl">
+                            <input class="input enterPass" type="text">
+                        </div>
+                    </div>
+                    <div class="fl form-item">
+                        <div class="form-item-name fl"></div>
+                        <div class="form-item-input fl">
+                            <div class="form-button enterBtn">登录</div>
+                        </div>
+                    </div>
+                    <div class="form-footer fl">
+                        <span>还没有账号？</span>
+                        <a class="toRegBtn" style="text-decoration: underline; color:#4496EE; cursor:pointer;">马上注册</a>
+                    </div>
+                </div>
+                <div class="regBox clear hide">
+                    <h3 class="title">注册</h3>
+                    <div class="title-line">
+                        <div></div>
+                    </div>
+                    <div class="fl form-item">
+                        <div class="form-item-name fl">用户名：</div>
+                        <div class="form-item-input fl">
+                            <input class="input regName" type="text">
+                        </div>
+                    </div>
+                    <div class="fl form-item">
+                        <div class="form-item-name fl">密码：</div>
+                        <div class="form-item-input fl">
+                            <input class="input regPass" type="text">
+                        </div>
+                    </div>
+                    <div class="fl form-item">
+                        <div class="form-item-name fl">确认：</div>
+                        <div class="form-item-input fl">
+                            <input class="input regPassAgain" type="text">
+                        </div>
+                    </div>
+                    <div class="fl form-item">
+                        <div class="form-item-name fl"></div>
+                        <div class="form-item-input fl">
+                            <div class="form-button regBtn">注册</div>
+                        </div>
+                    </div>
+                    <div class="form-footer fl">
+                        <span>已有账号？</span>
+                        <a style="text-decoration: underline; color:#4496EE; cursor:pointer;" class="toEnterBtn">马上登录</a>
+                    </div>
+                </div>
+                <div class="otherBox hide">
+                    <h3 class="title">用户信息</h3>
+                    <div class="title-line">
+                        <div></div>
+                    </div>
+                    <div class="userName"></div>
+                    <div class="welcomText1" style="color:#F58F00; padding-bottom: 10px;">您好！欢迎光临我的博客！</div>
+                    <div class="welcomText2 hide" style="color:#F58F00; padding-bottom: 10px;">
+                        <span>您好！管理员</span>
+                        <a href="/admin">进入管理</a>
+                    </div>
+                    <a href="" class="outBtn">退出</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="public/js/jquery.min.js"></script>
+<script src="public/js/main.js"></script>
+{% block script %}{% endblock %}
+</html>

@@ -1,0 +1,9 @@
+https://www.cnblogs.com/coolslider/p/7076191.html
+
+config/index.js
+ÐÞ¸Ä£º
+proxyTable: {
+      '/api':{
+      	target: 'http://localhost:8082'
+      }
+},

@@ -1,0 +1,7 @@
+一、数据库命令行启动
+1.找到数据库的bin目录
+2.执行 mongod --dbpath=D:\lkhresourse\代码\2018\基于node的博客系统\blog\db --port=27018
+
+
+二、node项目启动
+node app.js

@@ -1,0 +1,337 @@
+{% extends 'layout.html' %} {% block style %}
+<style>
+    .content-box {
+        width: 530px;
+        background: #fff;
+        margin-bottom: 20px;
+        padding: 30px 20px 20px 30px;
+    }
+
+    .content-title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        padding-bottom: 20px;
+    }
+
+    .content-base {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .content-base span.active {
+        color: #4496EE;
+    }
+
+    .content-info {
+        font-size: 16px;
+    }
+
+
+
+    .comment-box{
+        width: 530px;
+        background: #fff;
+        margin-bottom: 20px;
+        padding: 30px 20px 20px 30px;
+    }
+    .comment-text{
+        width: 450px;
+        height: 60px;
+        border: 1px solid #4496EE;
+        resize:none;
+        outline: none;
+        padding: 5px;
+    }
+    .sendComment-btn{
+        width: 68px;
+        background: #4496EE;
+        cursor: pointer;
+        text-align: center;
+        line-height: 72px;
+        font-size: 14px; 
+        color: #fff;
+    }
+    .cueBox{
+        width: 100%;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        background: #f2dede;
+        color: #a94442;
+        border-color: #ebccd1;
+        margin-bottom: 15px;
+    }
+    .comment-item{
+        padding-bottom: 20px;
+    }
+</style>
+{% endblock %} {% block content %}
+<div class="box-left fl clear">
+    <div class="content-box">
+        <div class="content-title">哈哈</div>
+        <div class="content-base">
+            <span>作者:</span>
+            <span class="active content-name"></span>
+            <span>-时间:</span>
+            <span class="active content-time"></span>
+            <span>-阅读:</span>
+            <span class="active content-views"></span>
+            <span>-评论:</span>
+            <span class="active comment-num"></span>
+        </div>
+        <div class="content-info">内容内容内容</div>
+    </div>
+    <div class="comment-box">
+        <div class="clear" style="height: 30px; line-height: 30px; margin-bottom: 10px;">
+            <div class="fl" style="font-size: 16px; font-weight: bold;">评论</div>
+            <div class="fr">
+                一共有
+                <span class="comment-num">0</span>
+                条评论
+            </div>
+        </div>
+        <div class="clear comment-text-box" style="margin-bottom: 10px;"> 
+            <div class="fl">
+                <textarea class="comment-text" name="" id="" cols="30" rows="10"></textarea>
+            </div>
+            <div class="fl sendComment-btn">提交</div>
+        </div>
+        <div class="clear cueBox hide">
+            你还没有登录，请先登录
+        </div>
+        <div class="clear noComment" style="padding-bottom: 20px;">
+            还没有留言
+        </div>
+        <div class="comment-list clear"></div>
+        <div style="padding-bottom: 20px; padding-top: 20px;" class="fenyeBox">
+            <div class="fl comment-preve" style="width: 10%; cursor: pointer;">上一页</div>
+            <div class="fl fenyeNum" style="width: 80%; text-align: center;">1/4</div>
+            <div class="fr comment-next" style="width: 10%; text-align: right; cursor:pointer;">下一页</div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+    var pageNum_comment = 1;
+    var pageSize_comment = 5;
+    var pages = 1;
+    var total = 0;
+    var commentList = [];
+
+
+
+    var _id = null; // 内容Id
+    // 获取内容id
+    (function typeData() {
+        var _href = window.location.href;
+        // 非首页
+        var hrefList = _href.split("?")[1];
+        if (hrefList.indexOf('&') == -1) {
+            // 只有一项
+            if (hrefList.split("=")[0] == '_id') {
+                _id = hrefList.split("=")[1];
+            } else {
+            }
+        } else {
+            hrefList = hrefList.split('&');
+            hrefList.forEach((item, index) => {
+                if (item.split("=")[0] == '_id') {
+                    _id = item.split("=")[1];
+                } else {
+                }
+            })
+        }
+    })();
+    // 获取内容详情
+    (function getInfo() {
+        var ajaxData = {};
+        var url = "/api/content/info";
+        ajaxData = {
+            _id: _id
+        }
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: ajaxData,
+            dataType: 'json',
+            success: function (res) {
+                if (res.code == 200) {
+                    var date2 = new Date(res.data.addTime);
+                    var time = date2.toLocaleString();
+                    $(".content-title").html(res.data.contentName);
+                    $(".content-time").html(time);
+                    $(".content-name").html(res.data.user.username);
+                    // $(".content-views").html(res.data.views);
+                    $(".content-info").html(res.data.content);
+
+                    addViews(res.data.views);
+
+                    var list = res.data.comments.reverse()||[];
+                    commentList = list;
+                    fnMakeCommentList(list);
+
+                }
+            }
+        })
+    })();
+
+
+    // 分页处理
+    function pageList (data) {
+        var list = data;
+        // pageNum_comment 1
+        // pageSize_comment 2
+        // pages
+        // total
+
+
+        // 总数
+        total = list.length;
+        // 页数
+        pages = Math.ceil(total/pageSize_comment);
+
+        if(total == 0){
+            $(".fenyeBox").addClass('hide');
+        }else{
+            $(".fenyeBox").removeClass('hide');
+        }
+
+        $(".fenyeNum").html(pageNum_comment+'/'+pages)
+
+        // 截取数组slice（start,end）包括start 不包括end,从0开始
+        /* 
+         * pageNum_comment - 1
+         * pageSize_comment - 2
+         * start - (pageNum_comment-1)*pageSize_comment  0
+         * end - (pageNum_comment)*pageSize_comment      2
+         * 
+         * 
+         * pageNum_comment - 2
+         * pageSize_comment - 2
+         * start - (pageNum_comment-1)*pageSize_comment  2
+         * end - (pageNum_comment)*pageSize_comment      4
+         * 
+         * 
+         * list = list.slice((pageNum_comment-1)*pageSize_comment,(pageNum_comment)*pageSize_comment)
+         */
+        list = list.slice((pageNum_comment-1)*pageSize_comment,(pageNum_comment)*pageSize_comment)
+        return list
+    }
+
+
+
+    // 阅读数的处理
+    function addViews(views) {
+        var ajaxData = {};
+        var url = "/api/content/edit";
+        ajaxData = {
+            _id: _id,
+            views: views + 1
+        }
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: ajaxData,
+            dataType: 'json',
+            success: function (res) {
+                $(".content-views").html(views + 1);
+            }
+        })
+    }
+
+    // 评论区域是否登录
+    (function fnInitComment () {
+        if(!!window.localStorage.getItem('userInfo')){
+            // 登录
+            $(".cueBox").addClass("hide");
+            $(".comment-text-box").removeClass("hide");
+        }else{
+            // 未登录
+            $(".cueBox").removeClass("hide");
+            $(".comment-text-box").addClass("hide");
+        }
+    })();
+
+
+
+    // 提交评论
+    $(".sendComment-btn").click(function(){
+        var ajaxData = {};
+        var url = "/api/content/addComment";
+        var userName = JSON.parse(window.localStorage.getItem('userInfo')).username;
+        ajaxData = {
+            contentId: _id,
+            content: $(".comment-text").val(),
+            userName: userName
+        }
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: ajaxData,
+            dataType: 'json',
+            success: function(res){
+                $(".comment-text").val('');
+                var list = res.data.comments.reverse()||[];
+                commentList = list;
+                fnMakeCommentList(list);
+            }
+        })
+    })
+
+
+    // 生成评论列表
+    function fnMakeCommentList (list){
+        list = pageList(list); // 处理分页
+        if(list.length>0){
+            $(".noComment").addClass('hide');
+            $(".comment-list").removeClass('hide');
+            $(".comment-num").html(total);
+        }else{
+            $(".noComment").removeClass('hide');
+            $(".comment-list").addClass('hide');
+            $(".comment-num").html(0);
+        }
+
+
+        var str = '';
+        list.forEach((item,index) => {
+            var date1 = new Date(item.postTime);
+            var time = date1.toLocaleString();
+            str += "<div class='comment-item'>";
+            str += "<div class='clear'>";
+            str += "<div class='fl'>"+item.userName+"</div>";
+            str += "<div class='fr'>"+time+"</div>";
+            str += "</div>";
+            str += "<div style='padding-top: 10px;'>";
+            str += "<div>"+item.content+"</div>";
+            str += "</div>";
+            str += "</div>";
+        })
+        $(".comment-list").html(str);
+    }
+
+
+
+    // 评论分页处理
+    
+
+
+    // 上一页
+    $(".fenyeBox").on('click','.comment-preve',function(){
+        if(pageNum_comment == 1){
+            return false;
+        }
+        pageNum_comment = pageNum_comment - 1;
+        fnMakeCommentList(commentList);
+    })
+
+    $(".fenyeBox").on('click','.comment-next',function(){
+        if(pageNum_comment == pages){
+            return false;
+        }
+        pageNum_comment = pageNum_comment + 1;
+        fnMakeCommentList(commentList);
+    })
+</script>
+{% endblock %}
